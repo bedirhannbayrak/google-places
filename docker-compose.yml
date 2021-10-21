@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  app:
+    container_name: google-places
+    image: google-places
+    restart: always
+    build: ./
+    ports:
+      - "8070:8070"
+    depends_on:
+      - pg-docker
+    links:
+      - pg-docker
+    environment:
+      - PROFILE=docker
+      - apikey=<YOUR_GOOGLE_PLACES_API_KEY>
+
+  pg-docker:
+    restart: always
+    container_name: pg-docker
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=places
+
+    volumes:
+    - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
+    driver: local
