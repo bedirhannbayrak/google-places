@@ -1,0 +1,95 @@
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+blockquote, p, pre,
+dl, dd, ol, ul,
+figure,
+hr,
+fieldset, legend {
+    margin: 0;
+    padding: 0;
+}
+
+li > ol,
+li > ul {
+    margin-bottom: 0;
+}
+
+fieldset {
+    min-width: 0;
+    border: 0;
+}
+
+button {
+    outline: none;
+    background: none;
+    border: none;
+}
+
+body {
+    font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    background-color: #0D1117;
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.App {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.map {
+    padding: 10px;
+    min-height: 100vh;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.marker {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background:url("https://cdn.pixabay.com/photo/2014/04/03/10/03/google-309739_960_720.png");
+    object-fit: fill;
+}
+.marker img{
+    height: 40px;
+}

@@ -17,6 +17,7 @@ public class ApiController {
     private final HttpRequestService requestService;
 
     @GetMapping("")
+    @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<ArrayList<PlacesResponseDto>> getPlaces(@RequestParam(required = false, name = "lat")String lat,
                                                                  @RequestParam(required = false, name = "lng") String lng,
