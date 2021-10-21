@@ -1,9 +1,10 @@
 package com.bedirhan.google.places.api.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,15 +14,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Location {
+public class Query {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer id;
-    @Column
-    private Double lat;
-    @Column
-    private Double lng;
 
+    @Column(unique = true)
+    private String name;
+
+    @Column
+    @OneToMany(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private Set<PlacesResponseDto> responseList = new HashSet<>();
 }

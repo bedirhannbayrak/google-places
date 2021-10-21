@@ -13,15 +13,21 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Location {
+public class PlacesResponseDto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer id;
-    @Column
-    private Double lat;
-    @Column
-    private Double lng;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    Location location;
+    private String icon;
+    @Column
+    private String name;
+    @Column
+    private Double rating;
+    @Column
+    private String vicinity;
 }

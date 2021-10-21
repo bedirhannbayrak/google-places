@@ -1,8 +1,8 @@
 package com.bedirhan.google.places.api.service;
 
-import com.bedirhan.google.places.api.dto.Location;
-import com.bedirhan.google.places.api.dto.PlacesResponseDto;
-import com.bedirhan.google.places.api.model.GoogleResponseBody;
+import com.bedirhan.google.places.api.model.Location;
+import com.bedirhan.google.places.api.model.PlacesResponseDto;
+import com.bedirhan.google.places.api.dto.GoogleResponseBody;
 import com.bedirhan.google.places.api.exception.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class HttpRequestService {
     @Value("${apikey}")
     private String apikey;
 
-    public ArrayList<PlacesResponseDto> getRequest(String lat, String lng, String radius) {
+    public Set<PlacesResponseDto> getRequest(String lat, String lng, String radius) {
         String URI = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng + "&radius=" + radius + "&types=food&key="
                 + apikey;
@@ -38,8 +40,8 @@ public class HttpRequestService {
         return ConvertResultToResponse(res);
     }
 
-    public ArrayList<PlacesResponseDto> ConvertResultToResponse(GoogleResponseBody body) {
-        ArrayList<PlacesResponseDto> list = new ArrayList<>();
+    public Set<PlacesResponseDto> ConvertResultToResponse(GoogleResponseBody body) {
+        Set<PlacesResponseDto> list = new HashSet<>();
         Arrays.stream(body.getResults()).forEach(res -> {
             list.add(PlacesResponseDto.builder()
                     .rating(res.getRating())

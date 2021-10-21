@@ -1,5 +1,6 @@
-package com.bedirhan.google.places.api.model;
+package com.bedirhan.google.places.api.dto;
 
+import com.bedirhan.google.places.api.model.Location;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
