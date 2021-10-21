@@ -1,43 +1,48 @@
 import './input.css'
-import {useReducer} from 'react'
+import {useState} from 'react'
+import axios from 'axios'
 
-const Input = ({setInputs,error,resultLength}) => {
+const Input = ({isLoading,setLoading,setData,data}) => {
+  const [error, setError] = useState("idle");
+  const [{latitude,longitude,radius},setInputs] = useState({
+    latitude:  "",
+    longitude: "",
+    radius: ""
+  })
 
-  const initialValue = {
-    latitude: '',
-    longitude: '',
-    radius: ''
-  };
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'update':
-        return {
-          ...state,
-          [action.payload.key]: action.payload.value
-        };
-      default:
-        throw new Error(`Unknown action type: ${action.type}`);
+  const fetchData = async ()=> {
+    setLoading(true);
+    setError("")
+    try {
+      const result = await axios(
+          `/api?lat=${latitude}&lng=${longitude}&radius=${radius}`,
+      );
+      setData(result.data);
+    } catch (err){
+      const data = err.response ? err.response.data : "Server error";
+      setError(data);
+      setData([])
     }
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialValue);
+    setLoading(false);
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
-    setInputs(() => ({
-          latitude: state.latitude,
-          longitude: state.longitude,
-          radius: state.radius,
-        }
-    ))
+    setInputs((prev)=>({...prev,
+          latitude,
+          longitude,
+          radius
+        })
+    )
+    fetchData()
   }
 
-  const handleChange = (event) => {
-    dispatch({
-      type: 'update',
-      payload: {key: event.target.name, value: event.target.value}
-    });
+  const handleChange = (e) => {
+    setInputs((prev) => ({
+      ...prev,
+    [e.target.name]:e.target.value
+    }))
   };
 
   return (
@@ -49,7 +54,7 @@ const Input = ({setInputs,error,resultLength}) => {
               <input className="input"
                      type="text"
                      placeholder="Latitude"
-                     value={state.latitude}
+                     value={latitude}
                      onChange={handleChange}
                      name="latitude"/>
             </div>
@@ -57,7 +62,7 @@ const Input = ({setInputs,error,resultLength}) => {
               <input className="input"
                      type="text"
                      placeholder="Longitude"
-                     value={state.longitude}
+                     value={longitude}
                      onChange={handleChange}
                      name="longitude"/>
 
@@ -66,15 +71,15 @@ const Input = ({setInputs,error,resultLength}) => {
               <input className="input"
                      type="text"
                      placeholder="Radius(mt)"
-                     value={state.radius}
+                     value={radius}
                      onChange={handleChange}
                      name="radius"/>
             </div>
             {
-              error && <div className="error">Invalid values</div>
+              error!=="idle" && error && <div className="error">Invalid values</div>
             }
             {
-              !error && resultLength===0 && <div className="warn">There is no place found at this area</div>
+              !error && data.length===0 && !isLoading && <div className="warn">There is no place found at this area</div>
             }
             <div className="btn-group">
               <button className="btn btn--pill "

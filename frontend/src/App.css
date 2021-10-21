@@ -93,3 +93,9 @@ input[type=number] {
 .marker img{
     height: 40px;
 }
+
+.loader{
+    position: absolute;
+    top:50%;
+    left:50%;
+}

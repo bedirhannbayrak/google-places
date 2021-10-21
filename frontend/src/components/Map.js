@@ -1,7 +1,7 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = ({text}) => <div className={'marker'}>
+const AnyReactComponent = () => <div className={'marker'}>
   <img
       src="https://cdn.pixabay.com/photo/2014/04/03/10/03/google-309739_960_720.png"
       alt="marker"/>
@@ -14,8 +14,8 @@ export default function SimpleMap({data}) {
         <GoogleMapReact
             bootstrapURLKeys={{key: process.env.REACT_APP_MAP_API}}
             defaultCenter={{
-              lat: data.length>0 ? data[0].location.lat : 40,
-              lng:  data.length>0 ? data[0].location.lng : 30,
+              lat: data.length > 0 ? data[0].location.lat : 40,
+              lng: data.length > 0 ? data[0].location.lng : 30
             }}
             defaultZoom={9}
             yesIWantToUseGoogleMapApiInternals
@@ -25,7 +25,6 @@ export default function SimpleMap({data}) {
                 <AnyReactComponent
                     lat={item.location.lat}
                     lng={item.location.lng}
-                    text={item.name}
                     key={idx}
                 />
             ))
