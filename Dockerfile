@@ -10,9 +10,11 @@ RUN mvn -f pom.xml clean install -DskipTests=true
 FROM adoptopenjdk
 COPY --from=build /workspace/target/*.jar app.jar
 ENV PROFILE=docker
-ENV apikey=apikey
+ENV APIKEY=APIKEY
+ENV REACT_APP_MAP_API=REACTAPIKEY
 EXPOSE 8070
 
 ENTRYPOINT [ "sh", "-c", "java  -Dspring.profiles.active=$PROFILE \
--Dapikey=$apikey \
+-DAPIKEY=$APIKEY \
+-DREACT_APP_MAP_API=$REACT_APP_MAP_API \
 -jar app.jar" ]

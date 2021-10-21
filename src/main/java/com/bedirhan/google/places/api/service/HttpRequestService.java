@@ -1,15 +1,14 @@
 package com.bedirhan.google.places.api.service;
 
-import com.bedirhan.google.places.api.model.Location;
-import com.bedirhan.google.places.api.model.PlacesResponseDto;
 import com.bedirhan.google.places.api.dto.GoogleResponseBody;
 import com.bedirhan.google.places.api.exception.InvalidRequestException;
+import com.bedirhan.google.places.api.model.Location;
+import com.bedirhan.google.places.api.model.PlacesResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +19,7 @@ public class HttpRequestService {
 
     private final WebClient.Builder webClientBuilder;
 
-    @Value("${apikey}")
+    @Value("${APIKEY}")
     private String apikey;
 
     public Set<PlacesResponseDto> getRequest(String lat, String lng, String radius) {
