@@ -31,7 +31,8 @@ public class HttpRequestService {
                 .get()
                 .uri(URI)
                 .retrieve()
-                .bodyToMono(GoogleResponseBody.class).block();
+                .bodyToMono(GoogleResponseBody.class).blockOptional()
+                .orElseThrow();
 
         if (res == null || res.getStatus().equals("INVALID_REQUEST")) {
             throw new InvalidRequestException("INVALID REQUEST");
@@ -41,11 +42,11 @@ public class HttpRequestService {
 
     public Set<PlacesResponseDto> ConvertResultToResponse(GoogleResponseBody body) {
         Set<PlacesResponseDto> list = new HashSet<>();
-        Arrays.stream(body.getResults()).forEach(res -> {
+        body.getResults().forEach(res -> {
             list.add(PlacesResponseDto.builder()
                     .rating(res.getRating())
-                    .icon(res.getIcon())
                     .location(Location.builder()
+                            .id(res.getGeometry().getLocation().getId())
                             .lat(res.getGeometry().getLocation().getLat())
                             .lng(res.getGeometry().getLocation().getLng())
                             .build())
