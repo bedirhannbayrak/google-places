@@ -7,11 +7,15 @@ import com.bedirhan.google.places.api.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Set;
 
 @RestController
+@Validated
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class ApiController {
@@ -19,20 +23,20 @@ public class ApiController {
     private final HttpRequestService requestService;
     private final QueryService queryService;
 
-    @GetMapping("")
+    @GetMapping()
     @CrossOrigin
     @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<Set<PlacesResponseDto>> getPlaces(@RequestParam(required = false, name = "lat") String lat,
-                                                            @RequestParam(required = false, name = "lng") String lng,
-                                                            @RequestParam(required = false, name = "radius") String radius) {
-        String queryName = lat + lng + radius;
+    public ResponseEntity<Set<PlacesResponseDto>> getPlaces(@RequestParam(name = "lat") @Max(360)  Double lat,
+                                                            @RequestParam(name = "lng") @Max (360) Double lng,
+                                                            @RequestParam(name = "radius") @Min(0) @Max(100000) Double radius) {
+        String queryName = String.valueOf(lng) + lat + + radius;
         Set<PlacesResponseDto> res;
         if (queryService.existByName(queryName)) {
             res = queryService.findByName(queryName).getResponseList();
         }else{
-            res = requestService.getRequest(lat, lng, radius);
+            res = requestService.getRequest(String.valueOf(lat),String.valueOf(lng),String.valueOf(radius));
             queryService.save(Query.builder()
-                    .name(lat + lng + radius)
+                    .name(queryName)
                     .responseList(res)
                     .build());
         }

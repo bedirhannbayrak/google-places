@@ -22,7 +22,7 @@ public class HttpRequestService {
     @Value("${APIKEY}")
     private String apikey;
 
-    public Set<PlacesResponseDto> getRequest(String lat, String lng, String radius) {
+    public Set<PlacesResponseDto> getRequest(String lat, String lng, String radius)  {
         String URI = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng + "&radius=" + radius + "&types=food&key="
                 + apikey;

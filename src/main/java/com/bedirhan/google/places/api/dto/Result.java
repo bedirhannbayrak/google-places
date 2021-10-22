@@ -1,5 +1,6 @@
 package com.bedirhan.google.places.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,6 +23,7 @@ public class Result {
     private String reference;
     private Scope scope;
     private String[] types;
+    @JsonProperty("user_ratings_total")
     private long userRatingsTotal;
     private String vicinity;
     private OpeningHours openingHours;
