@@ -40,7 +40,6 @@ public class ApiController {
                     .responseList(res)
                     .build());
         }
-
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

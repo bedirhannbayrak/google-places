@@ -1,49 +1,26 @@
 import './input.css'
-import {useState} from 'react'
-import axios from 'axios'
+import {useReducer, useState} from 'react'
+
+import fetchData from "../../utils/fetch"
+import reducer,{initialValue} from "../../utils/reducer"
 
 const Input = ({isLoading,setLoading,setData,data}) => {
   const [error, setError] = useState("idle");
-  const [{latitude,longitude,radius},setInputs] = useState({
-    latitude:  "",
-    longitude: "",
-    radius: ""
-  })
+  const [{latitude,longitude,radius}, dispatch] = useReducer(reducer, initialValue);
+
+  const handleChange = (e) => {
+    dispatch({
+      type: 'update',
+      payload: { key: e.target.name, value: e.target.value },
+    });
+  };
 
 
-  const fetchData = async ()=> {
-    setLoading(true);
-    setError("")
-    try {
-      const result = await axios(
-          `/api?lat=${latitude}&lng=${longitude}&radius=${radius}`,
-      );
-      setData(result.data);
-    } catch (err){
-      const data = err.response ? err.response.data : "Server error";
-      setError(data);
-      setData([])
-    }
-    setLoading(false);
-  }
 
   function handleSubmit(e) {
     e.preventDefault()
-    setInputs((prev)=>({...prev,
-          latitude,
-          longitude,
-          radius
-        })
-    )
-    fetchData()
+    fetchData({setLoading,setData,setError,latitude,longitude,radius,})
   }
-
-  const handleChange = (e) => {
-    setInputs((prev) => ({
-      ...prev,
-    [e.target.name]:e.target.value
-    }))
-  };
 
   return (
       <div className="search">
@@ -54,6 +31,7 @@ const Input = ({isLoading,setLoading,setData,data}) => {
               <input className="input"
                      type="text"
                      placeholder="Latitude"
+                     data-testid="latitude"
                      value={latitude}
                      onChange={handleChange}
                      name="latitude"/>
@@ -62,6 +40,7 @@ const Input = ({isLoading,setLoading,setData,data}) => {
               <input className="input"
                      type="text"
                      placeholder="Longitude"
+                     data-testid="longitude"
                      value={longitude}
                      onChange={handleChange}
                      name="longitude"/>
@@ -71,6 +50,7 @@ const Input = ({isLoading,setLoading,setData,data}) => {
               <input className="input"
                      type="text"
                      placeholder="Radius(mt)"
+                     data-testid="latitude"
                      value={radius}
                      onChange={handleChange}
                      name="radius"/>
@@ -83,6 +63,7 @@ const Input = ({isLoading,setLoading,setData,data}) => {
             }
             <div className="btn-group">
               <button className="btn btn--pill "
+                      data-testid="search"
                       type="submit">Search
               </button>
             </div>

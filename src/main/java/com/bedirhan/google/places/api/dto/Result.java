@@ -14,5 +14,4 @@ public class Result {
     private String name;
     private double rating;
     private String vicinity;
-
 }
